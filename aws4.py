@@ -1,17 +1,23 @@
 import boto3
+s3 = boto3.client('s3')
+s3.create_bucket(Bucket='mybucket-sidhu19', CreateBucketConfiguration={'LocationConstraint': 'us-west-2'})
 
-s3.create_bucket(Bucket='mybucketsidhu19')
-s3.create_bucket(Bucket='mybucket', CreateBucketConfiguration={
-    'LocationConstraint': 'us-west-2'})
+def upload_to_aws(local_file, bucket, s3_file):
+        s3 = boto3.client('s3')
 
 
-def upload_aws(aws1.py, bucket_name='mybucketsidhu19'):
-    s3 = boto3.client('s3', aws_access_key_id=access_key,
-                      aws_secret_access_key=secret_key)
+        try:
+            s3.upload_file(local_file, bucket, s3_file)
+            print("Upload Successful")
+            return True
+        except FileNotFoundError:
+            print("The file was not found")
+            return False
+        except NoCredentialsError:
+            print("Credentials not available")
+            return False
 
-    
-    s3.upload_file(aws1.py, bucket_name, aws_filename)
-    print("Upload Successful!")
-    return True
+
+upload_to_aws('/home/cloudshell-user/public/aws02.py', 'mybucket-sdfslkjd', 'ques2.py')
 
 
