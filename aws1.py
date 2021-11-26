@@ -1,3 +1,4 @@
+import boto3
 def create_key_pair():
     ec2_client = boto3.client("ec2", region_name="us-west-2")
     key_pair = ec2_client.create_key_pair(KeyName="ec2-key-pair")
@@ -9,6 +10,7 @@ def create_key_pair():
         handle.write(private_key)
 
 def create_instance():
+    global x
     ec2_client = boto3.client("ec2", region_name="us-west-2")
     instances = ec2_client.run_instances(
         ImageId="ami-0b0154d3d8011b0cd",
@@ -19,6 +21,7 @@ def create_instance():
     )
 
     print(instances["Instances"][0]["InstanceId"])
+    x = instances["Instances"][0]["InstanceId"]
 
 def get_public_ip(instance_id):
     ec2_client = boto3.client("ec2", region_name="us-west-2")
@@ -27,6 +30,12 @@ def get_public_ip(instance_id):
     for reservation in reservations:
         for instance in reservation['Instances']:
             print(instance.get("PublicIpAddress"))
+
+
+#create_key_pair()
+create_instance()
+print(x)
+get_public_ip(x)
 
 
 
